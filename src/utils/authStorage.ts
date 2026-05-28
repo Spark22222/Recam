@@ -19,7 +19,11 @@ export const getCurrentUser = (): User | null => {
     return null;
   }
 
-  return JSON.parse(user) as User;
+  try {
+    return JSON.parse(user) as User;
+  } catch {
+    return null;
+  }
 };
 
 export const getUserRole = (): string | null => {

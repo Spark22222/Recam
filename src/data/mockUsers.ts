@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'photographyCompany' | 'user';
+import type { UserRole } from '../types/auth';
 
 export interface MockUser {
   id: string;
