@@ -1,4 +1,4 @@
-export default function ListingCasesPage() {
+export default function OrdersPage() {
   return (
     <section>
       <h2 className="text-2xl font-bold text-slate-900">Listing Cases</h2>

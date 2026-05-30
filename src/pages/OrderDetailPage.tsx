@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 
-export default function ListingCaseDetailPage() {
+export default function OrderDetailPage() {
   const { id } = useParams();
 
   return (

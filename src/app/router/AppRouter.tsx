@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router';
-import AuthLayout from '../../layouts/AuthLayout';
-import DashboardLayout from '../../layouts/DashboardLayout';
+import AuthLayout from '../../components/layouts/AuthLayout';
+import DashboardLayout from '../../components/layouts/DashboardLayout';
 import DashboardPage from '../../pages/DashboardPage';
-import ListingCaseDetailPage from '../../pages/ListingCaseDetailPage';
-import ListingCasesPage from '../../pages/ListingCasesPage';
+import OrderDetailPage from '../../pages/OrderDetailPage';
+import OrdersPage from '../../pages/OrdersPage';
 import LoginPage from '../../pages/LoginPage';
 import NotFoundPage from '../../pages/NotFoundPage';
 import RegisterPage from '../../pages/RegisterPage';
@@ -31,8 +31,8 @@ export default function AppRouter() {
               />
             }
           >
-            <Route path="/listing-cases" element={<ListingCasesPage />} />
-            <Route path="/listing-cases/:id" element={<ListingCaseDetailPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/orders/:id" element={<OrderDetailPage />} />
           </Route>
         </Route>
       </Route>

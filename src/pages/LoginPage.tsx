@@ -41,7 +41,7 @@ export default function LoginPage() {
       saveAuthData(result);
 
       if (result.user.role === 'photographyCompany') {
-        navigate('/listing-cases');
+        navigate('/orders');
       } else {
         navigate('/dashboard');
       }
