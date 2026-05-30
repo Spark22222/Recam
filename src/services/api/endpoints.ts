@@ -5,8 +5,8 @@ export const API_ENDPOINTS = {
     me: '/auth/me',
   },
   listingCases: {
-    base: '/listing-cases',
-    detail: (id: string) => `/listing-cases/${id}`,
+    base: '/orders',
+    detail: (id: string) => `/orders/${id}`,
   },
   media: {
     upload: '/media/upload',
