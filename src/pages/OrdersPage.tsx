@@ -13,7 +13,9 @@ const getStatusClassName = (status: OrderStatus) => {
 
 export default function OrdersPage() {
   const user = getCurrentUser();
+
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const filteredOrders = useMemo(() => {
     const keyword = searchTerm.trim().toLowerCase();
@@ -26,11 +28,16 @@ export default function OrdersPage() {
       return (
         order.orderNumber.toLowerCase().includes(keyword) ||
         order.clientName.toLowerCase().includes(keyword) ||
-        order.propertyAddress.toLowerCase().includes(keyword) ||
-        order.status.toLowerCase().includes(keyword)
+        order.clientEmail.toLowerCase().includes(keyword) ||
+        order.propertyAddress.toLowerCase().includes(keyword)
       );
     });
   }, [searchTerm]);
+
+  const searchSuggestions = filteredOrders;
+
+  const showSuggestions =
+    isSearchFocused && Boolean(searchTerm.trim()) && searchSuggestions.length > 0;
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-14">
@@ -39,16 +46,43 @@ export default function OrdersPage() {
       </h1>
 
       <div className="mt-8 flex items-center justify-between gap-8">
-        <div className="mx-auto flex h-12 w-full max-w-2xl items-center rounded-md bg-slate-100 px-4">
-          <span className="mr-3 text-slate-400">⌕</span>
+        <div className="relative mx-auto w-full max-w-2xl">
+          <div className="flex h-12 w-full items-center rounded-md bg-slate-100 px-4 focus-within:ring-2 focus-within:ring-blue-300">
+            <span className="mr-3 text-slate-400">⌕</span>
 
-          <input
-            type="text"
-            placeholder="Search from order list"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            className="h-full flex-1 bg-transparent text-sm outline-none placeholder:text-slate-400"
-          />
+            <input
+              type="text"
+              placeholder="Search from order list"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => setIsSearchFocused(false)}
+              className="h-full flex-1 bg-transparent text-sm outline-none placeholder:text-slate-400"
+            />
+          </div>
+
+          {showSuggestions && (
+            <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-80 overflow-y-auto rounded-md bg-white py-3 shadow-lg">
+              {searchSuggestions.map((order) => (
+                <button
+                  key={order.id}
+                  type="button"
+                  onMouseDown={() => {
+                    setSearchTerm(order.orderNumber);
+                    setIsSearchFocused(false);
+                  }}
+                  className="block w-full px-8 py-3 text-left text-sm text-slate-700 hover:bg-slate-100"
+                >
+                  <span className="font-medium text-slate-700">
+                    {order.orderNumber}
+                  </span>{' '}
+                  <span className="text-slate-500">
+                    ( {order.clientName} )
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <button
@@ -74,13 +108,20 @@ export default function OrdersPage() {
 
           <tbody>
             {filteredOrders.map((order) => (
-              <tr key={order.orderNumber} className="border-t border-slate-100">
+              <tr key={order.id} className="border-t border-slate-100">
                 <td className="px-7 py-4">{order.orderNumber}</td>
+
                 <td className="px-7 py-4">{order.clientName}</td>
-                <td className="max-w-xs truncate px-7 py-4" title={order.propertyAddress}>
+
+                <td
+                  className="max-w-xs truncate px-7 py-4"
+                  title={order.propertyAddress}
+                >
                   {order.propertyAddress}
                 </td>
+
                 <td className="px-7 py-4">{order.orderTime}</td>
+
                 <td className="px-7 py-4">
                   <span
                     className={`inline-flex rounded-md px-4 py-1 text-xs font-semibold ${getStatusClassName(
@@ -90,6 +131,7 @@ export default function OrdersPage() {
                     {order.status}
                   </span>
                 </td>
+
                 <td className="px-7 py-4 text-right font-bold">...</td>
               </tr>
             ))}
