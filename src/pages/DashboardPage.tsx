@@ -1,10 +1,13 @@
+import { getCurrentUser } from '../utils/authStorage';
+
 export default function DashboardPage() {
+  const currentUser = getCurrentUser();
+
   return (
-    <section>
-      <h2 className="text-2xl font-bold text-slate-900">Dashboard</h2>
-      <p className="mt-2 text-slate-500">
-        Dashboard statistics and quick navigation cards will be added later.
-      </p>
+    <section className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center">
+      <h1 className="text-4xl font-semibold text-slate-900">
+        Hi, {currentUser?.name || 'User'}!
+      </h1>
     </section>
   );
 }
