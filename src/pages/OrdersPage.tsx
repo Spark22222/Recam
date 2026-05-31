@@ -74,7 +74,7 @@ export default function OrdersPage() {
 
           <tbody>
             {filteredOrders.map((order) => (
-              <tr key={order.id} className="border-t border-slate-100">
+              <tr key={order.orderNumber} className="border-t border-slate-100">
                 <td className="px-7 py-4">{order.orderNumber}</td>
                 <td className="px-7 py-4">{order.clientName}</td>
                 <td className="max-w-xs truncate px-7 py-4" title={order.propertyAddress}>

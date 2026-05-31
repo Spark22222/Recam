@@ -1,7 +1,8 @@
-import { type MockOrder } from "../types/order";
+import type { Order } from '../types/order';
 
-export const mockOrders: MockOrder[] = [
+export const mockOrders: Order[] = [
   {
+    id: '1',
     orderNumber: 'REC-1001',
     clientName: 'Alvin Chen',
     propertyAddress: '12 George Street, Sydney NSW 2000',
@@ -9,6 +10,7 @@ export const mockOrders: MockOrder[] = [
     status: 'Scheduled',
   },
   {
+    id: '2',
     orderNumber: 'REC-1002',
     clientName: 'Emily Wong',
     propertyAddress: '88 Pitt Street, Sydney NSW 2000',
@@ -16,6 +18,7 @@ export const mockOrders: MockOrder[] = [
     status: 'Delivered',
   },
   {
+    id: '3',
     orderNumber: 'REC-1003',
     clientName: 'Michael Brown',
     propertyAddress: '25 King Street, Newtown NSW 2042',
@@ -23,6 +26,7 @@ export const mockOrders: MockOrder[] = [
     status: 'Scheduled',
   },
   {
+    id: '4',
     orderNumber: 'REC-1004',
     clientName: 'Sarah Lee',
     propertyAddress: '9 Pacific Highway, North Sydney NSW 2060',
@@ -30,6 +34,7 @@ export const mockOrders: MockOrder[] = [
     status: 'Delivered',
   },
   {
+    id: '5',
     orderNumber: 'REC-1005',
     clientName: 'David Miller',
     propertyAddress: '45 Oxford Street, Bondi Junction NSW 2022',
