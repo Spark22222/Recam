@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { getCurrentUser } from '../utils/authStorage';
 import { mockOrders } from '../data/mockOrders';
 import type { OrderStatus } from '../types/order';
@@ -12,14 +13,15 @@ const getStatusClassName = (status: OrderStatus) => {
 };
 
 export default function OrdersPage() {
+  const navigate = useNavigate();
   const user = getCurrentUser();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
-  const filteredOrders = useMemo(() => {
-    const keyword = searchTerm.trim().toLowerCase();
+  const keyword = searchTerm.trim().toLowerCase();
 
+  const filteredOrders = useMemo(() => {
     if (!keyword) {
       return mockOrders;
     }
@@ -32,12 +34,17 @@ export default function OrdersPage() {
         order.propertyAddress.toLowerCase().includes(keyword)
       );
     });
-  }, [searchTerm]);
+  }, [keyword]);
 
-  const searchSuggestions = filteredOrders;
+  const showDropdown = isSearchFocused && Boolean(keyword);
 
-  const showSuggestions =
-    isSearchFocused && Boolean(searchTerm.trim()) && searchSuggestions.length > 0;
+  const hasSearchResults = filteredOrders.length > 0;
+
+  const tableOrders = keyword && !hasSearchResults ? mockOrders : filteredOrders;
+
+  const handleCreateOrder = () => {
+    navigate('/orders/create');
+  };
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-14">
@@ -61,32 +68,47 @@ export default function OrdersPage() {
             />
           </div>
 
-          {showSuggestions && (
+          {showDropdown && (
             <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-80 overflow-y-auto rounded-md bg-white py-3 shadow-lg">
-              {searchSuggestions.map((order) => (
-                <button
-                  key={order.id}
-                  type="button"
-                  onMouseDown={() => {
-                    setSearchTerm(order.orderNumber);
-                    setIsSearchFocused(false);
-                  }}
-                  className="block w-full px-8 py-3 text-left text-sm text-slate-700 hover:bg-slate-100"
-                >
-                  <span className="font-medium text-slate-700">
-                    {order.orderNumber}
-                  </span>{' '}
-                  <span className="text-slate-500">
-                    ( {order.clientName} )
-                  </span>
-                </button>
-              ))}
+              {hasSearchResults ? (
+                filteredOrders.map((order) => (
+                  <button
+                    key={order.id}
+                    type="button"
+                    onMouseDown={() => {
+                      setSearchTerm(order.orderNumber);
+                      setIsSearchFocused(false);
+                    }}
+                    className="block w-full px-8 py-3 text-left text-sm text-slate-700 hover:bg-slate-100"
+                  >
+                    <span className="font-medium text-slate-700">
+                      {order.orderNumber}
+                    </span>{' '}
+                    <span className="text-slate-500">
+                      ( {order.clientName} )
+                    </span>
+                  </button>
+                ))
+              ) : (
+                <div className="px-8 py-4 text-sm text-slate-500">
+                  No exist order, please try a new one or{' '}
+                  <button
+                    type="button"
+                    onMouseDown={handleCreateOrder}
+                    className="font-semibold text-slate-700 underline hover:text-blue-600"
+                  >
+                    Create New Order
+                  </button>
+                  .
+                </div>
+              )}
             </div>
           )}
         </div>
 
         <button
           type="button"
+          onClick={handleCreateOrder}
           className="h-12 min-w-44 rounded-md bg-[#4C9CE2] px-6 text-sm font-semibold text-white transition hover:bg-[#2f8bd8]"
         >
           + Create Order
@@ -107,7 +129,7 @@ export default function OrdersPage() {
           </thead>
 
           <tbody>
-            {filteredOrders.map((order) => (
+            {tableOrders.map((order) => (
               <tr key={order.id} className="border-t border-slate-100">
                 <td className="px-7 py-4">{order.orderNumber}</td>
 
@@ -137,12 +159,6 @@ export default function OrdersPage() {
             ))}
           </tbody>
         </table>
-
-        {filteredOrders.length === 0 && (
-          <div className="py-10 text-center text-sm text-slate-500">
-            No orders found.
-          </div>
-        )}
       </div>
     </section>
   );

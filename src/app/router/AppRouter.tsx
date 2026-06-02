@@ -8,6 +8,9 @@ import LoginPage from '../../pages/LoginPage';
 import NotFoundPage from '../../pages/NotFoundPage';
 import RegisterPage from '../../pages/RegisterPage';
 import ProtectedRoute from './ProtectedRoute';
+import ClientsPage from '../../pages/ClientsPage';
+import ClientDetailPage from '../../pages/ClientDetailPage';
+import CreateClientPage from '../../pages/CreateClientPage';
 
 export default function AppRouter() {
   return (
@@ -33,6 +36,9 @@ export default function AppRouter() {
           >
             <Route path="/orders" element={<OrdersPage />} />
             <Route path="/orders/:id" element={<OrderDetailPage />} />
+            <Route path="/clients" element={<ClientsPage />} />
+            <Route path="/clients/:id" element={<ClientDetailPage />} />
+            <Route path="/clients/create" element={<CreateClientPage />} />
           </Route>
         </Route>
       </Route>
